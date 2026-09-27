@@ -1,0 +1,24 @@
+name: VzGramm upstream integration check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "31 4 * * 1"
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout VzGramm
+        uses: actions/checkout@v4
+      - name: Import upstream Telegram Android
+        run: bash ./scripts/bootstrap-upstream.sh
+      - name: Apply VzGramm branding layer
+        run: bash ./scripts/apply-vzgramm-branding.sh
+      - name: Verify Android project
+        run: |
+          test -f settings.gradle
+          test -d TMessagesProj
+          test -f TMessagesProj/src/main/AndroidManifest.xml
+      - name: Validate Gradle wrapper
+        run: ./gradlew --version
