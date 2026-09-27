@@ -1,9 +1,12 @@
-name: VzGramm upstream integration check
+name: VzGramm upstream integration
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "31 4 * * 1"
+
+permissions:
+  contents: write
 
 jobs:
   integration:
@@ -11,14 +14,42 @@ jobs:
     steps:
       - name: Checkout VzGramm
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Import upstream Telegram Android
         run: bash ./scripts/bootstrap-upstream.sh
+
       - name: Apply VzGramm branding layer
         run: bash ./scripts/apply-vzgramm-branding.sh
-      - name: Verify Android project
-        run: |
-          test -f settings.gradle
-          test -d TMessagesProj
-          test -f TMessagesProj/src/main/AndroidManifest.xml
+
+      - name: Verify VzGramm identity
+        run: bash ./scripts/verify-vzgramm-branding.sh
+
       - name: Validate Gradle wrapper
         run: ./gradlew --version
+
+      - name: Compile VzGramm Android app
+        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --stacktrace
+
+      - name: Upload debug build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vzgramm-build
+          path: |
+            TMessagesProj_App/build/outputs/**/*.apk
+            TMessagesProj_App/build/outputs/**/*.aab
+          if-no-files-found: ignore
+
+      - name: Persist imported upstream source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to persist."
+            exit 0
+          fi
+          git commit -m "Sync Telegram Android upstream into VzGramm"
+          git push origin HEAD:main
