@@ -1,38 +1,47 @@
 # VzGramm
 
-A Telegram Android client fork project branded as **VzGramm**.
+An independent Android Telegram client fork branded as **VzGramm**.
 
 ## Current phase
 
-This repository currently contains the VzGramm branding/scaffolding only. Custom ExteraGram/AyuGram features are intentionally **not** included yet.
+The repository now has the upstream Telegram Android integration pipeline and the VzGramm public identity layer. Custom ExteraGram/AyuGram features are intentionally **not included yet**.
 
-### Branding goals
-- VzGramm name used consistently.
-- OLED-friendly dark visual language.
-- One master icon geometry reused across every launcher density/variant.
-- Android adaptive-icon resources prepared for the application package.
-- No neon gradients or eye-straining colors.
+### What is already prepared
 
-## Repository layout
+- VzGramm public app identity and launcher branding.
+- OLED-friendly dark icon family.
+- Deterministic import of the current upstream Android source tree.
+- VzGramm application id: `org.vzgramm.messenger`.
+- Fork-safe BuildVars defaults; upstream API/Firebase/store credentials are not reused.
+- Automated Gradle integration build in GitHub Actions.
+- Upstream source persistence after a successful integration run.
+- GPL-2.0 source preservation.
 
+## Integration flow
+
+```text
+DrKLO/Telegram
+      |
+      v
+bootstrap-upstream.sh
+      |
+      v
+apply-vzgramm-branding.sh
+      |
+      v
+verify-vzgramm-branding.sh
+      |
+      v
+Gradle assembleAfatRelease
+      |
+      v
+persist source to VzGramm/main
 ```
-app/
-  src/main/
-    AndroidManifest.xml
-    java/
-    res/
-      drawable/
-      mipmap-anydpi-v26/
-      values/
-branding/
-  icon/
-docs/
-```
 
-## Status
+Custom features are the **next** phase; they are not being mixed into the base client yet.
 
-Branding foundation: **in progress**  
-Telegram client integration: **next phase**  
-ExteraGram/AyuGram feature integration: **later phase**
+## Important
 
-> Telegram is a trademark of Telegram FZ-LLC. This project is an independent fork/client project.
+A working distributed client needs VzGramm's own Telegram API credentials, release signing configuration and, when Google services are enabled, its own Firebase project. The upstream project explicitly requires developers to use their own application credentials and not reuse Telegram's standard branding. citeturn0search0
+
+> Telegram is a trademark of Telegram FZ-LLC. VzGramm is an independent fork/client project.
