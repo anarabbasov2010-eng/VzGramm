@@ -1,6 +1,8 @@
 name: VzGramm upstream integration
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: "31 4 * * 1"
@@ -10,6 +12,7 @@ permissions:
 
 jobs:
   integration:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout VzGramm
