@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="vzgramm_icon_background">#16181B</color>
+    <color name="vzgramm_background">#111214</color>
+    <color name="vzgramm_surface">#191B1F</color>
+    <color name="vzgramm_foreground">#F5F6F7</color>
+    <color name="vzgramm_accent">#7C9CF5</color>
+    <color name="vzgramm_icon_background">#111214</color>
     <color name="vzgramm_icon_foreground">#F5F6F7</color>
 </resources>
