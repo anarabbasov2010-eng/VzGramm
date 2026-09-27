@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vzgramm_app_name">VzGramm</string>
+    <string name="vzgramm_package_name">org.vzgramm.messenger</string>
+    <color name="vzgramm_background">#111214</color>
+    <color name="vzgramm_surface">#191B1F</color>
+    <color name="vzgramm_foreground">#FFFFFF</color>
+    <color name="vzgramm_accent">#7C9CF5</color>
+</resources>
