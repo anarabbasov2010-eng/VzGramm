@@ -1,0 +1,21 @@
+name: VzGramm upstream check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout VzGramm
+        uses: actions/checkout@v4
+      - name: Check upstream availability
+        run: git ls-remote https://github.com/DrKLO/Telegram.git HEAD
+      - name: Verify branding assets
+        run: |
+          test -f branding/icon/vzgramm-master.svg
+          test -f branding/icon/vzgramm-mark.svg
+          test -f branding/icon/vzgramm-adaptive-foreground.svg
+          test -f app/src/main/res/drawable/vzgramm_icon_foreground.xml
