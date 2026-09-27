@@ -42,6 +42,6 @@ Custom features are the **next** phase; they are not being mixed into the base c
 
 ## Important
 
-A working distributed client needs VzGramm's own Telegram API credentials, release signing configuration and, when Google services are enabled, its own Firebase project. The upstream project explicitly requires developers to use their own application credentials and not reuse Telegram's standard branding. citeturn0search0
+A working distributed client needs VzGramm's own Telegram API credentials, release signing configuration and, when Google services are enabled, its own Firebase project. The upstream project requires developers to use their own application credentials and not reuse Telegram's standard branding.
 
 > Telegram is a trademark of Telegram FZ-LLC. VzGramm is an independent fork/client project.
