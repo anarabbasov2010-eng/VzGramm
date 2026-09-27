@@ -22,6 +22,13 @@ if [ -f "$ROOT/gradle.properties" ]; then
 fi
 
 # Disable upstream-only passkey behavior and official-store links.
+# Do not ship upstream Firebase project credentials in the fork.
+rm -f "$ROOT/TMessagesProj/google-services.json"
+for gradle_file in "$ROOT/TMessagesProj/build.gradle" "$ROOT/TMessagesProj_App/build.gradle" "$ROOT/TMessagesProj_AppStandalone/build.gradle"; do
+  [ -f "$gradle_file" ] || continue
+  sed -i "/apply plugin: 'com.google.gms.google-services'/d" "$gradle_file"
+done
+
 BUILD_VARS="$ROOT/TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java"
 if [ -f "$BUILD_VARS" ]; then
   sed -i \
