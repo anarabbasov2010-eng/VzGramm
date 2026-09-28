@@ -117,21 +117,16 @@ PY
 
 python3 - "$BUILD" <<'PY'
 from pathlib import Path
-import sys
+import sys, re
 p=Path(sys.argv[1]); s=p.read_text()
-needle='        bundleAfat {'
-flavor='''        arm64 {
-            ndk {
-                abiFilters "arm64-v8a"
-            }
-            ext {
-                abiVersionCode = 10
-            }
-            buildConfigField "boolean", "BUNDLE", "false"
-        }
-'''
-if '        arm64 {' not in s:
-    s=s.replace(needle, flavor+needle)
+# Remove the temporary standalone arm64 flavor; use upstream's afat flavor instead.
+s=re.sub(r'        arm64 \{.*?        \}\n        bundleAfat \{', '        bundleAfat {', s, flags=re.S)
+# Make only the afat flavor arm64 for the fast first alpha.
+m=re.search(r'(        afat \{.*?)(        \}\n)', s, flags=re.S)
+if m:
+    block=m.group(1)
+    block=re.sub(r'abiFilters "[^"]+"(?:, "[^"]+")*', 'abiFilters "arm64-v8a"', block, count=1)
+    s=s[:m.start(1)]+block+s[m.end(1):]
 p.write_text(s)
 PY
 
