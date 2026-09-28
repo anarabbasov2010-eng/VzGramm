@@ -136,4 +136,24 @@ s=s.replace('if (variant.buildType.name != "release" && !names.contains("afat"))
 p.write_text(s)
 PY
 
+
+# FAST ALPHA BUILD OVERRIDES
+# The upstream afat flavor normally compiles four ABIs. The first VzGramm alpha
+# intentionally ships arm64-v8a only to avoid compiling x86/x86_64/32-bit native code.
+python3 - "$BUILD" <<'PY'
+from pathlib import Path
+import re, sys
+p=Path(sys.argv[1])
+s=p.read_text()
+s=re.sub(r'(afat\\s*\\{\\s*ndk\\s*\\{\\s*abiFilters) "[^"]+"(?:,\\s*"[^"]+")*', r'\\1 "arm64-v8a"', s, count=1, flags=re.S)
+s=s.replace('minifyEnabled true', 'minifyEnabled false', 1)
+# The first matching true above is standalone on current upstream; force release explicitly too.
+s=re.sub(r'(release\\s*\\{[^}]*?)minifyEnabled\\s+true', r'\\1minifyEnabled false', s, count=1, flags=re.S)
+s=re.sub(r'(release\\s*\\{[^}]*?)shrinkResources\\s+true', r'\\1shrinkResources false', s, count=1, flags=re.S)
+p.write_text(s)
+PY
+
+# Remove upstream Google Services application plugin because VzGramm has no upstream Firebase config.
+sed -i "/apply plugin: 'com.google.gms.google-services'/d" "$BUILD"
+
 echo "Applied VzGramm Lab feature surface."
