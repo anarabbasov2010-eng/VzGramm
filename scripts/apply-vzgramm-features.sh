@@ -153,6 +153,10 @@ s=re.sub(r'(release\\s*\\{[^}]*?)shrinkResources\\s+true', r'\\1shrinkResources 
 p.write_text(s)
 PY
 
+# Force resource shrinking off for the first fast alpha because it requires code shrinking/R8.
+sed -i 's/shrinkResources true/shrinkResources false/g' "$BUILD"
+sed -i 's/minifyEnabled true/minifyEnabled false/g' "$BUILD"
+
 # Remove upstream Google Services application plugin because VzGramm has no upstream Firebase config.
 sed -i "/apply plugin: 'com.google.gms.google-services'/d" "$BUILD"
 
