@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: vzgramm-android-build
-  cancel-in-progress: true
+  group: vzgramm-android-build-${{ github.run_id }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
