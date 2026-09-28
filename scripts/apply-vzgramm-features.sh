@@ -95,4 +95,25 @@ if 'case 25:' not in s: s=s.replace(needle2,insert2)
 p.write_text(s)
 PY
 
+BUILD="$ROOT/TMessagesProj_App/build.gradle"
+python3 - "$BUILD" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); s=p.read_text()
+needle='        bundleAfat {'
+flavor='''        arm64 {
+            ndk {
+                abiFilters "arm64-v8a"
+            }
+            ext {
+                abiVersionCode = 10
+            }
+            buildConfigField "boolean", "BUNDLE", "false"
+        }
+'''
+if '        arm64 {' not in s:
+    s=s.replace(needle, flavor+needle)
+p.write_text(s)
+PY
+
 echo "Applied VzGramm Lab feature surface."
