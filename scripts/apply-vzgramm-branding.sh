@@ -136,3 +136,7 @@ cat > "$RES/mipmap-anydpi-v21/ic_launcher_round.xml" <<'EOF'
 EOF
 # Replace the Telegram onboarding wordmark with the VzGramm airplane wordmark.
 find "$ROOT/TMessagesProj/src/main/java/org/telegram/ui" -type f -name 'IntroActivity.java' -print0 | xargs -0 sed -i 's/R\.drawable\.telegram_logo/R.drawable.vzgramm_logo/g'
+
+# Ensure the actual application entry and every launcher alias use VzGramm icons.
+MANIFEST="$ROOT/TMessagesProj/src/main/AndroidManifest.xml"
+sed -i 's/android:icon="@mipmap\/[^"]*"/android:icon="@mipmap\/ic_launcher"/g; s/android:roundIcon="@mipmap\/[^"]*"/android:roundIcon="@mipmap\/ic_launcher_round"/g' "$MANIFEST"
