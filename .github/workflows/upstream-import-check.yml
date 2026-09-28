@@ -25,6 +25,19 @@ jobs:
       - name: Apply VzGramm branding
         run: bash ./scripts/apply-vzgramm-branding.sh
 
+      - name: Normalize localized VzGramm names
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path("TMessagesProj/src/main/res")
+          for p in root.rglob("strings*.xml"):
+              s=p.read_text(encoding="utf-8")
+              s=re.sub(r'(<string name="AppName">)[^<]*(</string>)', r'\\1VzGramm\\2', s)
+              s=re.sub(r'(<string name="AppNameBeta">)[^<]*(</string>)', r'\\1VzGramm Beta\\2', s)
+              p.write_text(s, encoding="utf-8")
+          PY
+
       - name: Apply VzGramm feature layer
         run: bash ./scripts/apply-vzgramm-features.sh
 
