@@ -29,6 +29,14 @@ jobs:
       - name: Verify VzGramm identity
         run: bash ./scripts/verify-vzgramm-branding.sh
 
+      - name: Preserve VzGramm development signing key
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VzGramm-signing-key
+          path: TMessagesProj/config/release.keystore
+          retention-days: 90
+
       - name: Validate Gradle wrapper
         run: ./gradlew --version
 
