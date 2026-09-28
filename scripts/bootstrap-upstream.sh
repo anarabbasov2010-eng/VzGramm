@@ -25,7 +25,6 @@ cp "$TMP/Telegram/settings.gradle" "$ROOT/"
 cp "$TMP/Telegram/build.gradle" "$ROOT/"
 cp "$TMP/Telegram/gradle.properties" "$ROOT/"
 cp "$TMP/Telegram/gradlew" "$ROOT/"
-cp "$TMP/Telegram/gradlew.bat" "$ROOT/"
 cp "$TMP/Telegram/LICENSE" "$ROOT/LICENSE" 2>/dev/null || true
 
 echo "VzGramm upstream Android source imported from $UPSTREAM_REF"
