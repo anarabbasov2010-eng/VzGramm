@@ -100,6 +100,25 @@ python3 - "$BUILD" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text()
+needle='    buildTypes {'
+block='''    buildTypes {
+        preview {
+            initWith release
+            debuggable false
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+'''
+if '        preview {' not in s:
+    s=s.replace(needle,block)
+p.write_text(s)
+PY
+
+python3 - "$BUILD" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); s=p.read_text()
 needle='        bundleAfat {'
 flavor='''        arm64 {
             ndk {
