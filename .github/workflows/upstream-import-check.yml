@@ -27,6 +27,9 @@ jobs:
         run: bash ./scripts/bootstrap-upstream.sh
 
       - name: Apply VzGramm branding
+        env:
+          VZGRAMM_API_ID: ${{ secrets.VZGRAMM_API_ID }}
+          VZGRAMM_API_HASH: ${{ secrets.VZGRAMM_API_HASH }}
         run: bash ./scripts/apply-vzgramm-branding.sh
 
       - name: Normalize localized VzGramm names
