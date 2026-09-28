@@ -32,6 +32,20 @@ jobs:
           VZGRAMM_API_HASH: ${{ secrets.VZGRAMM_API_HASH }}
         run: bash ./scripts/apply-vzgramm-branding.sh
 
+      - name: Validate VzGramm API credentials
+        env:
+          VZGRAMM_API_ID: ${{ secrets.VZGRAMM_API_ID }}
+          VZGRAMM_API_HASH: ${{ secrets.VZGRAMM_API_HASH }}
+        run: |
+          if [ -z "$VZGRAMM_API_ID" ] || [ -z "$VZGRAMM_API_HASH" ]; then
+            echo "::error::VZGramm login is not configured. Add repository secrets VZGRAMM_API_ID and VZGRAMM_API_HASH before building a login-capable APK."
+            exit 1
+          fi
+          if ! [[ "$VZGRAMM_API_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::VZGRAMM_API_ID must be numeric."
+            exit 1
+          fi
+
       - name: Normalize localized VzGramm names
         run: |
           python3 - <<'PY'
