@@ -135,4 +135,14 @@ if '        arm64 {' not in s:
 p.write_text(s)
 PY
 
+# Allow the lightweight arm64 preview variant through Telegram's original variant filter.
+python3 - "$BUILD" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1]); s=p.read_text()
+s=s.replace('if (variant.buildType.name != "release" && !names.contains("afat")) {',
+            'if (variant.buildType.name != "release" && variant.buildType.name != "preview" && !names.contains("afat")) {')
+p.write_text(s)
+PY
+
 echo "Applied VzGramm Lab feature surface."
