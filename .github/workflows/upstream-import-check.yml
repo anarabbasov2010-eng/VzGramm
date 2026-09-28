@@ -75,8 +75,22 @@ jobs:
           retention-days: 90
           if-no-files-found: error
 
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-cleanup: on-success
+
       - name: Build fast VzGramm alpha APK
-        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --stacktrace
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: 8
+          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g
+        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --build-cache --parallel --stacktrace
 
       - name: Upload VzGramm APK
         uses: actions/upload-artifact@v4
