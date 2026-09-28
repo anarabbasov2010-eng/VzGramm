@@ -1,10 +1,13 @@
-*.iml
+# Gradle
 .gradle/
-local.properties
-.idea/
 build/
 **/build/
-captures/
-.externalNativeBuild/
-.cxx/
-.DS_Store
+local.properties
+
+# Local / generated signing material
+TMessagesProj/config/release.keystore
+.vzgramm-signing/
+
+# IDE
+.idea/
+*.iml
