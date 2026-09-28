@@ -75,8 +75,8 @@ jobs:
           retention-days: 90
           if-no-files-found: error
 
-      - name: Build fast VzGramm preview APK
-        run: ./gradlew :TMessagesProj_App:assembleAfatPreview --no-daemon --stacktrace
+      - name: Build fast VzGramm alpha APK
+        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --stacktrace
 
       - name: Upload VzGramm APK
         uses: actions/upload-artifact@v4
