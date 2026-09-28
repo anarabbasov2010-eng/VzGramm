@@ -98,20 +98,16 @@ PY
 BUILD="$ROOT/TMessagesProj_App/build.gradle"
 python3 - "$BUILD" <<'PY'
 from pathlib import Path
-import sys
+import sys, re
 p=Path(sys.argv[1]); s=p.read_text()
-needle='    buildTypes {'
-block='''    buildTypes {
-        preview {
-            initWith release
-            debuggable false
-            minifyEnabled false
-            shrinkResources false
-            signingConfig signingConfigs.release
-        }
-'''
-if '        preview {' not in s:
-    s=s.replace(needle,block)
+s=re.sub(r'\n        preview \{.*?\n        \}\n', '\n', s, flags=re.S)
+# Keep the normal release variant compatible with upstream TMessagesProj; disable R8 only for the first alpha.
+m=re.search(r'(\n        release \{.*?)(\n        \}\n)', s, flags=re.S)
+if m:
+    block=m.group(1)
+    block=re.sub(r'minifyEnabled\s+true', 'minifyEnabled false', block, count=1)
+    block=re.sub(r'shrinkResources\s+true', 'shrinkResources false', block, count=1)
+    s=s[:m.start(1)]+block+s[m.end(1):]
 p.write_text(s)
 PY
 
