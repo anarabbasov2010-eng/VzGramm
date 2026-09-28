@@ -13,6 +13,27 @@ for d in "$ROOT/TMessagesProj" "$ROOT/TMessagesProj_App" "$ROOT/TMessagesProj_Ap
       -e 's/Telegram Beta/VzGramm Beta/g'
 done
 
+# Restore fork-local build metadata removed by upstream import.
+python3 - <<'PY'
+from pathlib import Path
+p=Path("gradle.properties")
+s=p.read_text()
+defaults={
+ "APP_VERSION_CODE":"10000",
+ "APP_VERSION_NAME":"1.0.0",
+ "APP_PACKAGE":"org.vzgramm.messenger",
+ "IS_PRIVATE":"false",
+ "RELEASE_KEY_PASSWORD":"vzgramm-dev-key",
+ "RELEASE_KEY_ALIAS":"vzgramm",
+ "RELEASE_STORE_PASSWORD":"vzgramm-dev-store",
+}
+import re
+for k,v in defaults.items():
+    if not re.search(rf"(?m)^{re.escape(k)}=",s):
+        s += f"\n{k}={v}"
+p.write_text(s)
+PY
+
 # Use a VzGramm application id while preserving upstream internal classes.
 if [ -f "$ROOT/gradle.properties" ]; then
   sed -i \
