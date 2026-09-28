@@ -1,7 +1,9 @@
 name: VzGramm Android shell
 
 on:
-  push:
+  workflow_dispatch:
+  # Disabled automatic shell build: the real Android pipeline is upstream-import-check.yml.
+  # push:
     branches: [main]
   pull_request:
     branches: [main]
