@@ -22,7 +22,7 @@ if [ -s "$KEY" ]; then
 fi
 
 if [ ! -s "$KEY" ]; then
-  keytool -genkeypair -v -keystore "$KEY"     -storepass "vzgramm-dev-store" -keypass "vzgramm-dev-key"     -alias "vzgramm" -keyalg RSA -keysize 2048 -validity 10000     -dname "CN=VzGramm Development, OU=VzGramm, O=VzGramm, L=Baku, ST=Baku, C=AZ"
+  keytool -genkeypair -v -keystore "$KEY"     -storepass "vzgramm-dev-store" -keypass "vzgramm-dev-store"     -alias "vzgramm" -keyalg RSA -keysize 2048 -validity 10000     -dname "CN=VzGramm Development, OU=VzGramm, O=VzGramm, L=Baku, ST=Baku, C=AZ"
 fi
 
 python3 - <<'PY'
@@ -30,7 +30,7 @@ from pathlib import Path
 import re
 p=Path("gradle.properties")
 s=p.read_text()
-for key,value in {"RELEASE_KEY_PASSWORD":"vzgramm-dev-key","RELEASE_KEY_ALIAS":"vzgramm","RELEASE_STORE_PASSWORD":"vzgramm-dev-store"}.items():
+for key,value in {"RELEASE_KEY_PASSWORD":"vzgramm-dev-store","RELEASE_KEY_ALIAS":"vzgramm","RELEASE_STORE_PASSWORD":"vzgramm-dev-store"}.items():
     s=re.sub(rf"^{key}=.*$", f"{key}={value}", s, flags=re.M)
 p.write_text(s)
 PY
