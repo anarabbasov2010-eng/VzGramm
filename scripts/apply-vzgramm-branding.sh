@@ -47,8 +47,8 @@ fi
 MANIFEST="$ROOT/TMessagesProj/src/main/AndroidManifest.xml"
 if [ -f "$MANIFEST" ]; then
   sed -i \
-    -e 's/android:icon="@mipmap/icon_[0-9]*_launcher"/android:icon="@mipmap\/ic_launcher"/g' \
-    -e 's/android:roundIcon="@mipmap/icon_[0-9]*_launcher_round"/android:roundIcon="@mipmap\/ic_launcher_round"/g' \
+    -e 's|android:icon="@mipmap/icon_[0-9]*_launcher"|android:icon="@mipmap/ic_launcher"|g' \
+    -e 's|android:roundIcon="@mipmap/icon_[0-9]*_launcher_round"|android:roundIcon="@mipmap/ic_launcher_round"|g' \
     "$MANIFEST"
 fi
 
