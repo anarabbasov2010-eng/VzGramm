@@ -15,6 +15,12 @@ if [ -n "$PREV_RUN" ]; then
   fi
 fi
 
+if [ -s "$KEY" ]; then
+  if ! keytool -list -keystore "$KEY" -storepass "vzgramm-dev-store" -alias "vzgramm" >/dev/null 2>&1; then
+    rm -f "$KEY"
+  fi
+fi
+
 if [ ! -s "$KEY" ]; then
   keytool -genkeypair -v -keystore "$KEY"     -storepass "vzgramm-dev-store" -keypass "vzgramm-dev-key"     -alias "vzgramm" -keyalg RSA -keysize 2048 -validity 10000     -dname "CN=VzGramm Development, OU=VzGramm, O=VzGramm, L=Baku, ST=Baku, C=AZ"
 fi
