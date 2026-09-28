@@ -84,3 +84,55 @@ cat > "$RES/values/vzgramm_brand.xml" <<'EOF'
 EOF
 
 echo "Applied VzGramm public branding, package id, launcher aliases and fork-safe BuildVars defaults"
+
+# VzGramm visual identity: custom airplane launcher icon and onboarding logo.
+RES="$ROOT/TMessagesProj/src/main/res"
+mkdir -p "$RES/drawable" "$RES/mipmap-anydpi-v21" "$RES/mipmap-anydpi-v26" "$RES/values"
+cat > "$RES/drawable/vzgramm_icon_background.xml" <<'EOF'
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#17191D" android:pathData="M0,0h108v108h-108z"/>
+    <path android:fillColor="#24272D" android:pathData="M0,0h108v108h-108z" android:fillAlpha="0.32"/>
+</vector>
+EOF
+cat > "$RES/drawable/vzgramm_icon_foreground.xml" <<'EOF'
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFF" android:pathData="M22,51.5 L83,25 L66,82 L50,63 L39,76 L42,58 Z"/>
+    <path android:fillColor="#17191D" android:pathData="M42,58 L83,25 L50,63 Z"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M50,63 L66,82 L58,58 Z"/>
+</vector>
+EOF
+cat > "$RES/drawable/vzgramm_logo.xml" <<'EOF'
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="115dp" android:height="35dp" android:viewportWidth="115" android:viewportHeight="35">
+    <path android:fillColor="#17191D" android:pathData="M3,17.5 L27,6 L20,29 L14,21 L9,27 L11,19 Z"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M11,19 L27,6 L14,21 Z"/>
+    <path android:fillColor="#17191D" android:pathData="M34,10h6v3h-3v12h-3z M43,10h14v4h-10v3h9v4h-9v4h-4z M60,10h11c5,0 8,3 8,7.5S76,25 71,25h-5v-4h4c2,0 3,-1 3,-3.5S72,14 70,14h-5v11h-5z M82,10h10c4,0 7,2 7,6 0,2.5 -1.2,4.3 -3.2,5.2L100,25h-7l-3,-4h-2v4h-6z M88,14v3h3c1.3,0 2,-0.5 2,-1.5S92.3,14 91,14z M102,10h10v4h-6v3h5v4h-5v4h-4z"/>
+</vector>
+EOF
+cat > "$RES/mipmap-anydpi-v26/ic_launcher.xml" <<'EOF'
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/vzgramm_icon_background"/>
+    <foreground android:drawable="@drawable/vzgramm_icon_foreground"/>
+</adaptive-icon>
+EOF
+cat > "$RES/mipmap-anydpi-v26/ic_launcher_round.xml" <<'EOF'
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/vzgramm_icon_background"/>
+    <foreground android:drawable="@drawable/vzgramm_icon_foreground"/>
+</adaptive-icon>
+EOF
+cat > "$RES/mipmap-anydpi-v21/ic_launcher.xml" <<'EOF'
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#17191D" android:pathData="M0,0h108v108h-108z"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M22,51.5 L83,25 L66,82 L50,63 L39,76 L42,58 Z"/>
+    <path android:fillColor="#17191D" android:pathData="M42,58 L83,25 L50,63 Z"/>
+</vector>
+EOF
+cat > "$RES/mipmap-anydpi-v21/ic_launcher_round.xml" <<'EOF'
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#17191D" android:pathData="M0,0h108v108h-108z"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M22,51.5 L83,25 L66,82 L50,63 L39,76 L42,58 Z"/>
+    <path android:fillColor="#17191D" android:pathData="M42,58 L83,25 L50,63 Z"/>
+</vector>
+EOF
+# Replace the Telegram onboarding wordmark with the VzGramm airplane wordmark.
+find "$ROOT/TMessagesProj/src/main/java/org/telegram/ui" -type f -name 'IntroActivity.java' -print0 | xargs -0 sed -i 's/R\.drawable\.telegram_logo/R.drawable.vzgramm_logo/g'
